@@ -15,7 +15,6 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def upload_document(req):
-    print("asdasasaasd");
     if 'file' not in req.files:
         return jsonify({'error': 'No file part'}), 400
 
@@ -36,14 +35,15 @@ def upload_document(req):
     file_path = os.path.join(UPLOAD_FOLDER, new_filename)
     file.save(file_path)
     
-    return jsonify({'file_name': file_path}), 200
+    return jsonify({'file_name': new_filename}), 200
 
 def query_document(req):
     from cerberus import Validator
     v = Validator()
 
     schema = {
-        'type': {'type': 'string', 'allowed': ['summary', 'entity_extraction', 'something'], 'required': True}
+        'type': {'type': 'string', 'allowed': ['summary', 'entity_extraction', 'something'], 'required': True},
+        'query': {'type': 'string', 'required': True},
     }
 
     query = req.args.to_dict()
@@ -51,4 +51,5 @@ def query_document(req):
         return jsonify({'message': 'Validation error', 'error': v.errors}), 400
 
     type = query['type']
-    return jsonify({'data': {'type': type, 'response': 'This is query response', 'precision': 2.2}}), 200
+    queryText = query['query']
+    return jsonify({'data': {'type': type, 'query': queryText, 'response': 'This is query response', 'precision': 2.2}}), 200

@@ -42,7 +42,7 @@ def query_document(req):
     v = Validator()
 
     schema = {
-        'type': {'type': 'string', 'allowed': ['summary', 'entity_extraction', 'something'], 'required': True},
+        'type': {'type': 'string', 'allowed': ['summary', 'entity_extraction', 'question_answer'], 'required': True},
         'query': {'type': 'string', 'required': True},
     }
 

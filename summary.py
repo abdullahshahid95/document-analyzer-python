@@ -3,7 +3,7 @@ import pdfplumber
 import pandas as pd
 from pptx import Presentation
 from moviepy.editor import VideoFileClip
-import cv2
+# import cv2
 import numpy as np
 from ai71 import AI71
 

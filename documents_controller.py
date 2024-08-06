@@ -5,7 +5,8 @@ from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
 from flask import current_app as app
 from werkzeug.exceptions import BadRequest
-import re
+import re 
+from summary import process_file
 
 ALLOWED_EXTENSIONS = {'pdf', 'doc', 'docx'}
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'uploads')
@@ -35,7 +36,20 @@ def upload_document(req):
     file_path = os.path.join(UPLOAD_FOLDER, new_filename)
     file.save(file_path)
     
-    return jsonify({'file_name': new_filename}), 200
+    text, summary, entities = process_file("./uploads/" + new_filename, file_ext, 0)
+
+    sanitized = ""
+
+    if entities:
+        sanitized = entities.split("Entities:\n- ")
+        if(len(sanitized) > 1):
+            sanitized = sanitized[1].strip()
+            if sanitized:
+                sanitized = sanitized.split("\n- ")
+        else:
+            sanitized = ""
+
+    return jsonify({'file_name': new_filename, 'summary': summary, 'entities': sanitized}), 200
 
 def query_document(req):
     from cerberus import Validator

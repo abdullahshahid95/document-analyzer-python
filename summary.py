@@ -6,9 +6,10 @@ from moviepy.editor import VideoFileClip
 # import cv2
 import numpy as np
 from ai71 import AI71
+import os;
 
 # Configure AI71 API key
-AI71_API_KEY = "api71-api-93b91e10-132b-403e-a06c-b9724b62940a"
+AI71_API_KEY = os.getenv("AI71_API_KEY")
 
 ai71_client = AI71(AI71_API_KEY)
 
